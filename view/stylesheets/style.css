@@ -1,12 +1,41 @@
 body {
-    background-color: rgb(255, 132, 79);
+    background-color: rgb(255, 255, 255);
     color: rgb(5, 5, 5);
 }
 
-.loading {
+body.loading {
     cursor: progress;
 }
 
-input:user-invalid {
-    background-color: brown;
+.table-container {
+    max-height: 400px;
+    overflow: auto;
+}
+
+#products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#products-table th,
+#products-table td {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: left;
+}
+
+#products-table th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+/* Allgemeine Buttons und Tabellenbuttons */
+.button,
+.table-button {
+    padding: 8px 12px;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    margin-right: 8px;
 }

@@ -1,8 +1,9 @@
 class LoginController {
-        
+
     static onSubmit(event) {
         //verhindert das die seite beim absenden neu geladen wird
         event.preventDefault();
+        document.body.classList.add("loading");
         LoginController.sendLogin();
     }
 
@@ -16,17 +17,18 @@ class LoginController {
 
             if (!response.ok) {
                 alert("Login gescheitert überprüfe deine Anmeldedaten.");
+                document.body.classList.remove("loading");
                 return;
             }
 
-            console.log("Login erfolgreich");
+            LoginController.loginSuccessfully();
+            
         } catch (error) {
             console.error(error.message);
         }
     }
-}
 
-document
-    .querySelector("#login-form")
-    //ruft die Funktion onSubmit auf sobald auf Knopf gedrückt
-    .addEventListener("submit", LoginController.onSubmit);
+    static loginSuccessfully() {
+        window.location.href = "/view/products.php";
+    }
+}
