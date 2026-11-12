@@ -12,19 +12,23 @@ body.loading {
     overflow: auto;
 }
 
-#products-table {
+#products-table,
+#categories-table {
     width: 100%;
     border-collapse: collapse;
 }
 
 #products-table th,
-#products-table td {
+#products-table td,
+#categories-table th,
+#categories-table td {
     padding: 10px;
     border: 1px solid black;
     text-align: left;
 }
 
-#products-table th {
+#products-table th,
+#categories-table th {
     position: sticky;
     top: 0;
     background-color: white;
@@ -38,4 +42,30 @@ body.loading {
     color: black;
     border: 1px solid black;
     margin-right: 8px;
+}
+#product-form,
+#category-form {
+    max-width: 500px;
+}
+
+#product-form label,
+#category-form label {
+    display: block;
+    margin-top: 15px;
+}
+
+#product-form input:not([type="checkbox"]),
+#product-form select,
+#product-form textarea,
+#category-form input:not([type="checkbox"]) {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+}
+
+#product-form button,
+#category-form button {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }

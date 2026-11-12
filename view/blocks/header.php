@@ -7,6 +7,7 @@
     <title>Onlineshop <?= $page_title ?></title>
     <link rel="stylesheet" href="/view/stylesheets/style.css">
     <script defer src="/model/api-model.js"></script>
+    <script defer src="/controller/login-controller.js"></script>
     <?php if ($page_controller_path): ?>
         <script defer src="<?= $page_controller_path ?>"></script>
     <?php endif; ?>

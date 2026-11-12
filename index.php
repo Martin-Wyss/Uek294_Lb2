@@ -1,6 +1,6 @@
 <?php
 $page_title = 'Login';
-$page_controller_path = 'controller/login-controller.js';
+$page_controller_path = null;
 
 
 require __DIR__ . '/view/blocks/header.php';

@@ -12,6 +12,10 @@ class ProductsController {
         try {
             const response = await ApiModel.getProducts();
 
+            if (!LoginController.checkAuthentication(response)) {
+                return;
+            }
+
             if (!response.ok) {
                 document.getElementById("product-message").textContent =
                     "Produkte konnten nicht geladen werden.";
@@ -96,6 +100,10 @@ class ProductsController {
 
         try {
             const response = await ApiModel.deleteProduct(sku);
+
+            if (!LoginController.checkAuthentication(response)) {
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error("Das Produkt konnte nicht gelöscht werden.");
