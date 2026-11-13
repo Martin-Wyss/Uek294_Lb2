@@ -5,10 +5,10 @@
 <h1>Kategorie erstellen / bearbeiten</h1>
 
 <p id="category-message" role="status"></p>
-
+<!-- Dieses Formular dient zum Erstellen und Bearbeiten von Kategorien. -->
 <form id="category-form">
     <label for="category-name">Name</label>
-    <input type="text" id="category-name" required>
+    <input type="text" id="category-name" placeholder="Name" required>
 
     <label for="active">
         <input type="checkbox" id="active" checked>
@@ -18,8 +18,7 @@
     <button class="button" type="submit">Speichern</button>
 </form>
 
-<button class="button" type="button"
-    onclick="window.location.href='/view/categories.php'">
+<button class="button" type="button" onclick="window.location.href='/view/categories.php'">
     Zurück zu den Kategorien
 </button>
 

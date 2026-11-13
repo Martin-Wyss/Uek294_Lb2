@@ -1,23 +1,28 @@
+/* Setzt den Hintergrund auf Weiss und die Schriftfarbe auf Schwarz. */
 body {
     background-color: rgb(255, 255, 255);
-    color: rgb(5, 5, 5);
+    color: rgb(0, 0, 0);
 }
 
+/* Zeigt einen Ladecursor, während eine Anfrage läuft. */
 body.loading {
     cursor: progress;
 }
 
+/* Begrenzt die Höhe der Tabellen und macht sie scrollbar. */
 .table-container {
     max-height: 400px;
     overflow: auto;
 }
 
+/* Die Tabellen nutzen die ganze verfügbare Breite. Die Zellrahmen teilen sich eine Linie. */
 #products-table,
 #categories-table {
     width: 100%;
     border-collapse: collapse;
 }
 
+/* Gibt den Tabellenzellen einen Rahmen und Innenabstand. Der Text steht links. */
 #products-table th,
 #products-table td,
 #categories-table th,
@@ -27,6 +32,7 @@ body.loading {
     text-align: left;
 }
 
+/* Die Spaltenüberschriften bleiben beim Scrollen oben sichtbar. */
 #products-table th,
 #categories-table th {
     position: sticky;
@@ -34,7 +40,7 @@ body.loading {
     background-color: white;
 }
 
-/* Allgemeine Buttons und Tabellenbuttons */
+/* Gibt den allgemeinen Buttons und den Tabellenbuttons dasselbe Aussehen. */
 .button,
 .table-button {
     padding: 8px 12px;
@@ -43,17 +49,22 @@ body.loading {
     border: 1px solid black;
     margin-right: 8px;
 }
+
+/* Begrenzt die Breite der beiden Detailformulare. */
 #product-form,
 #category-form {
     max-width: 500px;
 }
 
+/* Setzt jede Beschriftung auf eine eigene Zeile und gibt ihr oben Abstand. */
 #product-form label,
 #category-form label {
     display: block;
     margin-top: 15px;
 }
 
+/* Setzt die Felder untereinander und macht sie so breit wie das Formular.
+   Rahmen und Innenabstand zählen zur Breite dazu. Die Checkbox wird nicht beachtet. */
 #product-form input:not([type="checkbox"]),
 #product-form select,
 #product-form textarea,
@@ -64,6 +75,7 @@ body.loading {
     padding: 8px;
 }
 
+/* Gibt den Speichern-Buttons oben und unten etwas Abstand. */
 #product-form button,
 #category-form button {
     margin-top: 20px;

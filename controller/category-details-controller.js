@@ -1,10 +1,11 @@
 /**
- * Steuert die Kategoriedetailseite.
+ * Steuert das Formular zum Anzeigen, Erstellen und Bearbeiten von Kategorien.
  */
 class CategoryDetailsController {
 
     /**
-     * Erkennt, ob eine Kategorie erstellt oder bearbeitet werden soll.
+     * Verbindet das Formular mit der Speichermethode.
+     * Steht eine Kategorie-ID in der Adresse, lädt die Methode diese Kategorie.
      */
     static initialize() {
         document.getElementById("category-form")
@@ -23,8 +24,11 @@ class CategoryDetailsController {
     }
 
     /**
-     * Lädt die gewählte Kategorie aus der API.
+     * Lädt eine Kategorie anhand ihrer ID und füllt das Formular aus.
+     * Bei einem Ladefehler erscheint eine Meldung.
      * @param categoryId Die ID der Kategorie.
+     * @returns Ein Promise. Bei einer Weiterleitung zum Login ergibt es false,
+     *     sonst liefert es keinen Wert.
      */
     static async loadCategory(categoryId) {
         document.body.classList.add("loading");
@@ -32,7 +36,7 @@ class CategoryDetailsController {
         try {
             const response = await ApiModel.getCategory(categoryId);
 
-            if (!LoginController.checkAuthentication(response)) {
+            if (!LoginController.hasNoAuthenticationError(response)) {
                 return false;
             }
 
@@ -52,16 +56,21 @@ class CategoryDetailsController {
     }
 
     /**
-    * Verhindert das normale Absenden und startet das Speichern.
-    * @param event Das Absendeereignis des Formulars.
-    */
+     * Verhindert das normale Absenden des Formulars und startet das Speichern.
+     * @param event Das Ereignis beim Absenden des Formulars.
+     */
     static onSubmit(event) {
         event.preventDefault();
         CategoryDetailsController.saveCategory();
     }
 
     /**
-     * Erstellt eine Kategorie oder speichert ihre Änderungen.
+     * Liest den Namen und den Aktivstatus aus dem Formular.
+     * Mit einer ID wird die bestehende Kategorie geändert.
+     * Ohne ID wird eine neue Kategorie erstellt.
+     * Wenn das Speichern klappt, öffnet sich die Kategorieübersicht.
+     * @returns Ein Promise. Bei einer Weiterleitung zum Login ergibt es false,
+     *     sonst liefert es keinen Wert.
      */
     static async saveCategory() {
         const params = new URLSearchParams(window.location.search);
@@ -69,7 +78,7 @@ class CategoryDetailsController {
 
         const name = document.getElementById("category-name").value.trim();
         const saveButton = document.querySelector("#category-form button");
-        let active = "0";
+        let active = 0;
 
         if (document.getElementById("active").checked) {
             active = 1;
@@ -95,7 +104,7 @@ class CategoryDetailsController {
                 response = await ApiModel.createCategory(active, name);
             }
 
-            if (!LoginController.checkAuthentication(response)) {
+            if (!LoginController.hasNoAuthenticationError(response)) {
                 return false;
             }
 
@@ -103,6 +112,7 @@ class CategoryDetailsController {
                 throw new Error("Die Kategorie konnte nicht gespeichert werden.");
             }
 
+            alert("Die Kategorie wurde gespeichert.");
             window.location.href = "/view/categories.php";
 
         } catch (error) {
@@ -115,8 +125,9 @@ class CategoryDetailsController {
     }
 
     /**
-     * Füllt das Formular mit den Kategoriedaten.
-     * @param category Die geladene Kategorie.
+     * Trägt den gespeicherten Namen ins Formular ein
+     * und setzt das Häkchen passend zum Aktivstatus.
+     * @param category Die Kategorie aus der API.
      */
     static showCategory(category) {
         document.getElementById("category-name").value = category.name;

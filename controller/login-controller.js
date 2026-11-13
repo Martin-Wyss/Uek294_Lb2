@@ -1,5 +1,11 @@
+/**
+ * Steuert die Anmeldung, die Abmeldung und die Weiterleitung nach dem Login.
+ */
 class LoginController {
-
+    /**
+     * Verhindert das normale Absenden des Formulars und startet die Anmeldung.
+     * @param event Das Ereignis beim Absenden des Formulars.
+     */
     static onSubmit(event) {
         //verhindert das die seite beim absenden neu geladen wird
         event.preventDefault();
@@ -8,8 +14,10 @@ class LoginController {
     }
 
     /**
-    * Sendet die Anmeldedaten an die API und prüft die Antwort.
-    */
+  * Liest Benutzername und Passwort aus und sendet sie an die API.
+  * Wenn die Anmeldung klappt, startet die Weiterleitung.
+  * Bei einem Fehler erscheint eine Meldung.
+  */
     static async sendLogin() {
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
@@ -33,8 +41,9 @@ class LoginController {
     }
 
     /**
-    * Öffnet nach der Anmeldung die gewünschte Seite.
-    */
+     * Öffnet nach dem Login die vorher gemerkte Seite.
+     * Wenn keine Seite gespeichert ist, öffnet sich die Produktübersicht.
+     */
     static loginSuccessfully() {
         const returnPage = sessionStorage.getItem("returnPage");
         sessionStorage.removeItem("returnPage");
@@ -47,8 +56,8 @@ class LoginController {
     }
 
     /**
-    * Verbindet den Abmelden-Button mit der Abmeldung.
-    */
+     * Verbindet den Abmelden-Button mit der Abmeldung, wenn es den Button auf der Seite gibt.
+     */
     static initialize() {
         const logoutButton = document.getElementById("logout-button");
 
@@ -58,11 +67,11 @@ class LoginController {
     }
 
     /**
-    * Öffnet bei fehlender Anmeldung die Login-Seite.
-    * @param response Die Antwort der API.
-    * @returns Ob kein Anmeldefehler vorliegt.
-    */
-    static checkAuthentication(response) {
+     * Merkt sich bei Status 401 die aktuelle Seite und öffnet die Anmeldung.
+     * @param response Die Antwort der API.
+     * @returns false bei Status 401, sonst true.
+     */
+    static hasNoAuthenticationError(response) {
         if (response.status === 401) {
             sessionStorage.setItem(
                 "returnPage",
@@ -78,6 +87,8 @@ class LoginController {
 
     /**
      * Meldet den Benutzer bei der API ab.
+     * Wenn die Abmeldung klappt, öffnet sich die Anmeldeseite.
+     * Bei einem Fehler erscheint eine Meldung.
      */
     static async logout() {
         const logoutButton = document.getElementById("logout-button");

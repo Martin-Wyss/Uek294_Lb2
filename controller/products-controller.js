@@ -1,10 +1,11 @@
 /**
- * Steuert die Produktübersicht.
+ * Steuert die Produktübersicht und ihre Buttons.
  */
 class ProductsController {
 
     /**
-     * Lädt die Produkte und prüft die API-Antwort.
+     * Lädt die Produkte aus der API und zeigt sie in der Tabelle an.
+     * Bei einem Fehler erscheint eine Meldung.
      */
     static async loadProducts() {
         document.body.classList.add("loading");
@@ -12,7 +13,7 @@ class ProductsController {
         try {
             const response = await ApiModel.getProducts();
 
-            if (!LoginController.checkAuthentication(response)) {
+            if (!LoginController.hasNoAuthenticationError(response)) {
                 return;
             }
 
@@ -36,9 +37,10 @@ class ProductsController {
     }
 
     /**
-    * Zeigt die Produkte in der Tabelle an.
-    * @param products Die Produktliste der API.
-    */
+     * Erstellt für jedes Produkt eine Tabellenzeile mit den Aktionsbuttons.
+     * Bei einer leeren Liste erscheint ein Hinweis.
+     * @param products Die Produktliste aus der API.
+     */
     static showProducts(products) {
         const productList = document.getElementById("products-list");
         productList.textContent = "";
@@ -62,7 +64,9 @@ class ProductsController {
             detailsButton.type = "button";
             detailsButton.textContent = "Anzeigen / Bearbeiten";
             detailsButton.className = "table-button";
-
+            /**
+             * Öffnet die Detailseite mit der Artikelnummer dieses Produkts.
+             */
             detailsButton.addEventListener("click", function () {
                 window.location.href =
                     "/view/product-details.php?sku=" + encodeURIComponent(product.sku);
@@ -74,7 +78,9 @@ class ProductsController {
             deleteButton.type = "button";
             deleteButton.textContent = "Löschen";
             deleteButton.className = "table-button";
-
+            /**
+             * Ruft die Löschmethode für dieses Produkt auf.
+             */
             deleteButton.addEventListener("click", function () {
                 ProductsController.deleteProduct(product.sku);
             });
@@ -84,9 +90,10 @@ class ProductsController {
     }
 
     /**
-    * Löscht ein Produkt nach einer Bestätigung.
+     * Fragt zuerst nach, ob das Produkt gelöscht werden soll.
+     * Nach erfolgreichem Löschen lädt die Methode die Produktliste neu.
      * @param sku Die Artikelnummer des Produkts.
-    */
+     */
     static async deleteProduct(sku) {
         const isConfirmed = confirm(
             "Produkt " + sku + " wirklich löschen?"
@@ -101,7 +108,7 @@ class ProductsController {
         try {
             const response = await ApiModel.deleteProduct(sku);
 
-            if (!LoginController.checkAuthentication(response)) {
+            if (!LoginController.hasNoAuthenticationError(response)) {
                 return;
             }
 

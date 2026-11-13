@@ -4,8 +4,7 @@
 
 <h1>Kategorien</h1>
 
-<button class="button" type="button"
-    onclick="window.location.href='/view/category-details.php'">
+<button class="button" type="button" onclick="window.location.href='/view/category-details.php'">
     Neue Kategorie
 </button>
 
@@ -21,6 +20,7 @@
                 <th>Aktionen</th>
             </tr>
         </thead>
+        <!-- Der Kategorie-Controller fügt hier die geladenen Kategorien als Tabellenzeilen ein. -->
         <tbody id="categories-list">
         </tbody>
     </table>

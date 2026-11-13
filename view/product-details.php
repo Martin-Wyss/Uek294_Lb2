@@ -5,19 +5,19 @@
 <h1>Produkt erstellen / bearbeiten</h1>
 
 <p id="product-message" role="status"></p>
-
+<!-- Beim Erstellen ist das Formular leer. Beim Bearbeiten wird es mit den Produktdaten gefüllt. -->
 <form id="product-form">
     <label for="sku">Artikelnummer</label>
-    <input type="text" id="sku" required>
+    <input type="text" id="sku" placeholder="111111" required>
 
     <label for="product-name">Name</label>
-    <input type="text" id="product-name" required>
+    <input type="text" id="product-name" placeholder="Name" required>
 
     <label for="price">Preis</label>
-    <input type="number" id="price" min="0" step="0.01" required>
+    <input type="number" id="price" min="0" step="0.01" placeholder="10" required>
 
     <label for="stock">Lagerbestand</label>
-    <input type="number" id="stock" min="0" step="1" required>
+    <input type="number" id="stock" min="0" step="1" placeholder="3" required>
 
     <label for="category">Kategorie</label>
     <select id="category" required>
@@ -25,10 +25,10 @@
     </select>
 
     <label for="description">Beschreibung</label>
-    <textarea id="description"></textarea>
+    <textarea id="description" placeholder="Beschreibung"></textarea>
 
     <label for="image">Bild-URL</label>
-    <input type="url" id="image">
+    <input type="url" id="image" placeholder="https://yourwebsite.com/images/filename.jpg">
 
     <label for="active">
         <input type="checkbox" id="active" checked>

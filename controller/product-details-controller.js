@@ -1,10 +1,11 @@
 /**
- * Steuert die Produktdetailseite.
+ * Steuert das Formular zum Anzeigen, Erstellen und Bearbeiten von Produkten.
  */
 class ProductDetailsController {
 
     /**
-     * Erkennt, ob ein Produkt erstellt oder bearbeitet werden soll.
+     * Verbindet das Formular mit der Speichermethode und lädt die Kategorien.
+     * Steht eine Artikelnummer in der Adresse, lädt die Methode auch das Produkt.
      */
     static async initialize() {
         document.getElementById("product-form")
@@ -33,16 +34,19 @@ class ProductDetailsController {
     }
 
     /**
-    * Lädt das gewählte Produkt aus der API.
-    * @param sku Die Artikelnummer des Produkts.
-    */
+     * Lädt ein Produkt anhand seiner Artikelnummer und füllt das Formular aus.
+     * Bei einem Ladefehler erscheint eine Meldung.
+     * @param sku Die Artikelnummer des Produkts.
+     * @returns Ein Promise. Bei einer Weiterleitung zum Login ergibt es false,
+     *     sonst liefert es keinen Wert.
+     */
     static async loadProduct(sku) {
         document.body.classList.add("loading");
 
         try {
             const response = await ApiModel.getProduct(sku);
 
-            if (!LoginController.checkAuthentication(response)) {
+            if (!LoginController.hasNoAuthenticationError(response)) {
                 return false;
             }
 
@@ -62,14 +66,15 @@ class ProductDetailsController {
     }
 
     /**
-    * Lädt die Kategorien in das Auswahlfeld.
-    * @returns Ob die Kategorien erfolgreich geladen wurden.
-    */
+     * Lädt die Kategorien aus der API und fügt sie ins Auswahlfeld ein.
+     * @returns Ein Promise mit true bei Erfolg oder false bei einem Fehler
+     *     oder einer Weiterleitung zur Anmeldung.
+     */
     static async loadCategories() {
         try {
             const response = await ApiModel.getCategories();
 
-            if (!LoginController.checkAuthentication(response)) {
+            if (!LoginController.hasNoAuthenticationError(response)) {
                 return false;
             }
 
@@ -99,9 +104,10 @@ class ProductDetailsController {
     }
 
     /**
-    * Füllt das Formular mit den Produktdaten.
-    * @param product Das geladene Produkt.
-    */
+     * Trägt die gespeicherten Produktdaten in das Formular ein.
+     * Wählt die passende Kategorie aus und setzt das Aktiv-Häkchen.
+     * @param product Das Produkt, das aus der API geladen wurde.
+     */
     static showProduct(product) {
         document.getElementById("sku").value = product.sku;
         document.getElementById("product-name").value = product.name;
@@ -114,16 +120,19 @@ class ProductDetailsController {
     }
 
     /**
-    * Verhindert das normale Absenden und startet das Speichern.
-    * @param event Das Absendeereignis des Formulars.
-    */
+     * Verhindert das normale Absenden des Formulars und startet das Speichern.
+     * @param event Das Ereignis beim Absenden des Formulars.
+     */
     static onSubmit(event) {
         event.preventDefault();
         ProductDetailsController.saveProduct();
     }
 
     /**
-     * Liest die Produktdaten aus und sendet sie an die API.
+     * Liest die Produktdaten aus dem Formular und sendet sie an die API.
+     * Während der Anfrage ist der Speichern-Button gesperrt.
+     * Wenn das Speichern klappt, öffnet sich die Produktübersicht.
+     * Bei einem Fehler erscheint eine Meldung.
      */
     static async saveProduct() {
         const sku = document.getElementById("sku").value.trim();
@@ -133,7 +142,7 @@ class ProductDetailsController {
         const categoryId = Number(document.getElementById("category").value);
         const description = document.getElementById("description").value;
         const image = document.getElementById("image").value.trim();
-        let active = "0";
+        let active = 0;
 
         if (document.getElementById("active").checked) {
             active = 1;
@@ -148,14 +157,15 @@ class ProductDetailsController {
                 sku, active, categoryId, name, image, description, price, stock
             );
 
-            if (!LoginController.checkAuthentication(response)) {
+            if (!LoginController.hasNoAuthenticationError(response)) {
                 return;
             }
 
             if (!response.ok) {
                 throw new Error("Das Produkt konnte nicht gespeichert werden.");
             }
-
+            
+            alert("Das Produkt wurde gespeichert.");
             window.location.href = "/view/products.php";
 
         } catch (error) {

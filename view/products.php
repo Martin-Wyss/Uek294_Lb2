@@ -4,8 +4,7 @@
 
 <h1>Produkte</h1>
 
-<button class="button" type="button"
-    onclick="window.location.href='/view/product-details.php'">
+<button class="button" type="button" onclick="window.location.href='/view/product-details.php'">
     Neues Produkt
 </button>
 
@@ -21,6 +20,7 @@
                 <th>Aktionen</th>
             </tr>
         </thead>
+        <!-- Der Produkt-Controller fügt hier die geladenen Produkte als Tabellenzeilen ein. -->
         <tbody id="products-list">
         </tbody>
     </table>
